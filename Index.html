@@ -7,6 +7,7 @@
     <style>
         /* https://medivia.online/forum/thread/48886 */
     </style>
+    <script src="main.js"></script>
 </head>
 <body>
     <h1>Spellpower</h1>
@@ -14,54 +15,61 @@
     <input type="number" id="level" name="level" min="1" required>
     <br><br>
 
+    <label for="magicLevel">Magic Level:</label>
+    <input type="number" id="magicLevel" name="magicLevel" min="1" required>
+    <br><br>
+
     <label for="vocacao">Vocação:</label>
-    <select id="vocacao" name="vocacao" required>
+    <select id="vocacao" name="vocacao" required onchange="toggleStats()">
+        <option value="knight">None</option>
         <option value="knight">Knight</option>
         <option value="archer">Archer</option>
         <option value="archer-arcane">Archer-Arcane</option>
         <option value="mage">Mage</option>
         <option value="druid">Druid</option>
-        <option value="none">None</option>
     </select>
     <br><br>
 
-    <label for="magicLevel">Magic Level:</label>
-    <input type="number" id="magicLevel" name="magicLevel" min="1" required>
+
+
+    <div id="stats">
+        <label id="strengthLabel" for="strength" style="display: none;">Strength:</label>
+        <input type="number" id="strength" name="strength" min="0" required style="display: none;">
+
+        <label id="dexterityLabel" for="dexterity" style="display: none;">Dexterity:</label>
+        <input type="number" id="dexterity" name="dexterity" min="0" required style="display: none;">
+
+        <label id="intelligenceLabel" for="intelligence" style="display: none;">Intelligence:</label>
+        <input type="number" id="intelligence" name="intelligence" min="0" required style="display: none;">
+    </div>
     <br><br>
 
-    <label for="strength">Strength:</label>
-    <input type="number" id="strength" name="strength" min="0" required>
-
-    <label for="dexterity">Dexterity:</label>
-    <input type="number" id="dexterity" name="dexterity" min="0" required>
-
-    <label for="intelligence">Intelligence:</label>
-    <input type="number" id="intelligence" name="intelligence" min="0" required>
-    <br><br>
-
-    <button onclick="calcularSpellpower()">Calcular Spellpower</button>
+    <button onclick="calcularSpellpower()">Calcular Spellpower</button> <br><br>
 
     <div id="spellPowerResult"></div>
 
-    <h1>Archer</h1>
+    <script>
+        function toggleStats() {
+            var vocacao = document.getElementById("vocacao").value;
+            var statsDiv = document.getElementById("stats");
 
-    <label for="dexterity">Dexterity:</label>
-    <input type="number" id="dexterity" name="dexterity" min="1" required>
+            // Oculta todos os campos de stats e suas labels
+            document.querySelectorAll('#stats input, #stats label').forEach(function(el) {
+                el.style.display = 'none';
+            });
 
-    <label for="precise">Precise Attribute:</label>
-    <input type="checkbox" id="precise" name="precise">
-
-    <label for="distanceDamage">Distância Mín/Máx Dano:</label>
-    <input type="number" id="distanceDamage" name="distanceDamage" min="0" required>
-    <input type="number" id="distanceDamageMax" name="distanceDamageMax" min="0" required>
-
-    <label for="spellpower">Spellpower:</label>
-    <input type="number" id="spellpower" name="spellpower" min="0" required>
-
-    <button onclick="calcularDano()">Calcular Dano</button>
-
-    <div id="damageResult"></div>
-
-    <script src="main.js"></script>
+            // Mostra apenas os campos relevantes para a vocação selecionada
+            if (vocacao === "knight") {
+                document.getElementById("strengthLabel").style.display = 'inline';
+                document.getElementById("strength").style.display = 'block';
+            } else if (vocacao === "archer" || vocacao === "archer-arcane") {
+                document.getElementById("dexterityLabel").style.display = 'inline';
+                document.getElementById("dexterity").style.display = 'block';
+            } else if (vocacao === "mage" || vocacao === "druid") {
+                document.getElementById("intelligenceLabel").style.display = 'inline';
+                document.getElementById("intelligence").style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>
